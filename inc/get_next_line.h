@@ -9,5 +9,10 @@
 /*   Updated: 2022/06/14 13:52:17 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
+#ifndef BUFFER_SIZE
+    # define BUFFER_SIZE 50
+#endif
 
+char *get_next_line(int fd);

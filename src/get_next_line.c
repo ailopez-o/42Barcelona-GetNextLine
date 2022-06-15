@@ -11,38 +11,68 @@
 /* ************************************************************************** */
 #include "../inc/get_next_line.h"
 
-char *ft_line(char *buffer)
+int ft_linelen(char *s)
 {
-    buffer = buffer + 1;
-    buffer = buffer - 1;
-    return(ft_strdup("Linea leida)"));
+    size_t	i;
 
+	i = 0;
+	while (*(s + i) != '\n')
+		i++;
+	return (i);
 }
 
-char *get_next_line(int fd)
+char *ft_extract_line(char *buffer)
 {
-    static char *buffer;
+    char    *line;
+
+    line = malloc((ft_linelen(buffer) + 1) * sizeof (char));
+    ft_memmove(line, buffer, ft_linelen(buffer) + 1);
+    return(line);
+}
+
+char *ft_read(int fd, char *buffer)
+{
     char        *new_buffer;
     char        *reading;
-    char        *line;
 
     if (!buffer)
     {
         buffer = malloc(BUFFER_SIZE * sizeof (char));
         read(fd, buffer, BUFFER_SIZE);
     } 
-    printf("FD [%d] -- BUFFER[%d]\n %s\n", fd, BUFFER_SIZE, buffer);
-    reading = NULL;
+    reading = malloc(BUFFER_SIZE * sizeof (char)); 
     while (ft_strchr(buffer, '\n') == 0)
     {
-        printf("Buffer read\n");
         read(fd, reading, BUFFER_SIZE);
         new_buffer = ft_strjoin(buffer, reading);
         free (buffer);
-        free (reading);
         buffer = new_buffer;
     }
-    line = ft_line(buffer);
+    free (reading);
+    return(new_buffer);
+}
+
+char *ft_remove_line(char *buffer)
+{
+    int     size;
+    int     start;
+
+    start = ft_linelen(buffer) + 1;
+    size = ft_strlen(buffer) - start;
+    return (ft_substr(buffer,start, size));
+}
+
+char *get_next_line(int fd)
+{
+    static char *buffer[1024];
+    char        *line;
+    char        *new_buffer;
+
+    buffer[fd] = ft_read(fd, buffer[fd]);
+    line = ft_extract_line(buffer[fd]);
+    new_buffer = ft_remove_line(buffer[fd]);
+    free (buffer[fd]);
+    buffer[fd] = new_buffer;
     return (line);
 }
 

@@ -10,18 +10,6 @@
 #    Updated: 2022/05/24 00:35:24 by aitorlope        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42barcelon      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/05/09 16:48:38 by ailopez-          #+#    #+#              #
-#    Updated: 2022/06/03 13:50:22 by aitoraudi        ###   ########.fr        #
-#    Updated: 2022/05/24 00:35:24 by aitorlope        ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 #Variables
 
 NAME		= a.out
@@ -30,7 +18,7 @@ LIBFT		= libft
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -D BUFFER_SIZE=4 -MMD -I 
+CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=4 -MMD -I 
 RM			= rm -f
 AR			= ar rcs
 

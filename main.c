@@ -13,27 +13,22 @@
 #include <stdio.h> 
 #include <fcntl.h> 
 
-
-int main (void)
+/*
+int main (int argv, char **argc)
 {
     int fd;
-    //int fd2;
     char *line;
-    //char *buffer;
+    int i;
 
-/*
-    fd2 = open("files/file1.txt", O_RDONLY | O_CREAT);
-    buffer = malloc(1000 * sizeof (char)); 
-    read(fd2, buffer, 1000);
-    close (fd2);
-    printf("VERSO %s", buffer); 
-*/
-    //buffer = malloc(30 * sizeof(char));
-    fd = open("files/file1.txt", O_RDONLY | O_CREAT);
+    if (argv < 2)
+        return(0);
+    fd = open(argc[1], O_RDONLY | O_CREAT);
 
     line = get_next_line(fd);
-    printf("LINEA %s", line); 
-    while (line)
+    printf("LINEA %s", line);
+    free (line); 
+    i = 5;
+    while (i--)
     {
         line = get_next_line(fd);
         if (line)
@@ -43,9 +38,37 @@ int main (void)
         }
     }      
     close (fd);
-    //read(fd, buffer, 30);
-    //printf("FD [%d] - %s",fd, buffer);
 }
+*/
+
+
+int main (void)
+{
+    int     fd;
+    char    *line;
+    char    arg[] = "files/42_with_nl";
+    char    c;
+
+    fd = open(arg, O_RDONLY | O_CREAT);
+
+    line = get_next_line(fd);
+    printf("LINEA %s", line);
+    free (line); 
+    read(fd, &c, 1);
+    printf("caracter %c\n", c);
+    line = get_next_line(fd);
+    printf("LINEA2 %s", line); 
+    return (0);
+    while (line)
+    {
+        line = get_next_line(fd);
+        printf("LINEA2 %s", line);
+        if (line)
+            free (line);
+    }      
+    close (fd);
+}
+
 
 
 

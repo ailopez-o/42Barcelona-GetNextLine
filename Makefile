@@ -13,14 +13,10 @@
 #Variables
 
 NAME		= a.out
-INCLUDE		= inc
-LIBFT		= libft
-SRC_DIR		= src/
-OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=4 -MMD -I 
+CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=42
 RM			= rm -f
-AR			= ar rcs
+
 
 # Colors
 
@@ -36,51 +32,31 @@ WHITE = \033[0;97m
 
 #Sources
 
-SRC_FILES	=	main get_next_line get_next_line_utils
-
-
-SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
-DEPS 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .d, $(SRC_FILES)))
+SRC		=	main.c proyect/get_next_line.c proyect/get_next_line_utils.c
+OBJS	=	$(SRC:%.c=%.o)
 
 ###
 
-OBJF		=	.cache_exists
-
-all:	makelibs
+all:	
 	@$(MAKE)	$(NAME)
 
-makelibs:	
-			@$(MAKE) -C $(LIBFT)
 			
--include 	${DEPS}
-$(NAME):	$(OBJ) ${LIBFT}/libft.a $(INCLUDE)/get_next_line.h
-			make -C $(LIBFT)
-			${CC} ${OBJ} ${LIBFT}/${LIBFT}.a -o ${NAME}
-			@echo "$(MAGENTA)${CC} ${OBJ} ${LIBFT}/${LIBFT}.a -o ${NAME} $(DEF_COLOR)"
+$(NAME):	${OBJS} proyect/get_next_line.h
+			${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+			@echo "${CC} ${FLAGS} ${OBJS} -o ${NAME} $(DEF_COLOR)"
 			@echo "$(GREEN)GetNextLine Ready!$(DEF_COLOR)"
 
 bonus:		
 			@$(MAKE) all
 			
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-
-$(OBJF):
-			@mkdir -p $(OBJ_DIR)
-
 clean:
-			$(RM) -rf $(OBJ_DIR)
-			@make clean -C $(LIBFT)
+			${RM} ${OBJS}
 			@echo "$(CYAN)GetNextLine object files cleaned!$(DEF_COLOR)"
 
 fclean:		clean
-			$(RM) -f $(NAME)
-			@echo "$(CYAN)GetNextLine executable files cleaned!$(DEF_COLOR)"
-			$(RM) -f $(LIBFT)/libft.a
-			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
-			${RM} bonus
+			${RM} ${NAME} 
+			@echo "$(CYAN)GetNextLine executable files cleaned!$(DEF_COLOR)"	
+
 
 re:			fclean 
 			@$(MAKE)	

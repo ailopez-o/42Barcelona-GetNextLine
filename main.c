@@ -9,7 +9,7 @@
 /*   Updated: 2022/06/16 00:01:41 by aitorlope        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../inc/get_next_line.h"
+#include "proyect/get_next_line.h"
 #include <stdio.h> 
 #include <fcntl.h> 
 

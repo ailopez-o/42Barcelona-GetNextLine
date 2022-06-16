@@ -9,7 +9,19 @@
 /*   Updated: 2022/06/16 11:06:59 by aitorlope        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../inc/get_next_line.h"
+#include "get_next_line.h"
+
+int	ft_linelen(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (*(s + i) != '\n' && *(s + i) != '\0')
+		i++;
+	if (*(s + i) == '\0')
+		return (i);
+	return (i + 1);
+}
 
 char	*ft_extract_line(char *buffer)
 {
@@ -20,24 +32,11 @@ char	*ft_extract_line(char *buffer)
 	line = malloc(size * sizeof (char));
 	if (line == NULL)
 		return (NULL);
-	ft_memmove(line, buffer, ft_linelen(buffer) + 1);
+	ft_strlcpy(line, buffer, ft_linelen(buffer) + 1);
 	line [size - 1] = '\0';
 	if (buffer[0] == '\0')
 		return (NULL);
 	return (line);
-}
-
-char	*ft_trim(int size, char *str)
-{
-	char	*trim;
-
-	trim = malloc((size + 1) * sizeof(char));
-	if (trim == NULL)
-		return (NULL);
-	trim = ft_memcpy(trim, str, size);
-	trim [size] = '\0';
-	free (str);
-	return (trim);
 }
 
 char	*ft_read(int fd, char *buffer)
@@ -50,13 +49,15 @@ char	*ft_read(int fd, char *buffer)
 	endfile = 0;
 	while (ft_strchr(buffer, '\n') == 0 && endfile == 0)
 	{
-		reading = malloc(BUFFER_SIZE * sizeof (char));
+		reading = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (reading == NULL)
 			return (buffer);
+		reading[BUFFER_SIZE] = '\0';
 		bytesread = read(fd, reading, BUFFER_SIZE);
+		//printf("\nBYTES[%d] - Cadena [%s]\n", bytesread, reading);
 		if (bytesread < BUFFER_SIZE)
 		{
-			reading = ft_trim(bytesread, reading);
+			ft_strlcpy (reading, reading, bytesread + 1);
 			endfile = 1;
 		}
 		new_buffer = ft_strjoin(buffer, reading);
@@ -69,12 +70,24 @@ char	*ft_read(int fd, char *buffer)
 
 char	*ft_remove_line(char *buffer)
 {
-	int	size;
-	int	start;
+	int		size;
+	int		start;
+	char	*newbuffer;
 
 	start = ft_linelen(buffer);
 	size = ft_strlen(buffer) - start;
-	return (ft_substr(buffer, start, size));
+	newbuffer = malloc (size * sizeof (char));
+	if (newbuffer == NULL)
+		return (NULL);
+	buffer = buffer + start;
+	while (*buffer)
+	{
+		*newbuffer = *buffer;
+		newbuffer++;
+		buffer++;
+	}
+	*newbuffer = *buffer;
+	return (newbuffer - size);
 }
 
 char	*get_next_line(int fd)
@@ -83,10 +96,13 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*new_buffer;
 
+	if (fd < 1 || fd > 1023 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
+		return (NULL);
 	if (!buffer[fd])
 	{
 		buffer[fd] = malloc(BUFFER_SIZE * sizeof (char));
-		read(fd, buffer, BUFFER_SIZE);
+		if (buffer[fd] == NULL)
+			return (NULL);
 	}
 	buffer[fd] = ft_read(fd, buffer[fd]);
 	line = ft_extract_line(buffer[fd]);

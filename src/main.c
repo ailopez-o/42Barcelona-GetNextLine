@@ -17,8 +17,17 @@
 int main (void)
 {
     int fd;
+    //int fd2;
     char *line;
+    //char *buffer;
 
+/*
+    fd2 = open("files/file1.txt", O_RDONLY | O_CREAT);
+    buffer = malloc(1000 * sizeof (char)); 
+    read(fd2, buffer, 1000);
+    close (fd2);
+    printf("VERSO %s", buffer); 
+*/
     //buffer = malloc(30 * sizeof(char));
     fd = open("files/file1.txt", O_RDONLY | O_CREAT);
 
@@ -27,9 +36,13 @@ int main (void)
     while (line)
     {
         line = get_next_line(fd);
-        printf("LINEA %s", line);
-        free (line);
+        if (line)
+        {   
+            printf("LINEA %s", line);
+            free (line);
+        }
     }      
+    close (fd);
     //read(fd, buffer, 30);
     //printf("FD [%d] - %s",fd, buffer);
 }

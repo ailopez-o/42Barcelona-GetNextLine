@@ -18,7 +18,7 @@ LIBFT		= libft
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=4 -MMD -I 
+CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=20 -MMD -I 
 RM			= rm -f
 AR			= ar rcs
 

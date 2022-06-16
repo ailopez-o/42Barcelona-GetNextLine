@@ -16,7 +16,7 @@ int ft_linelen(char *s)
     size_t	i;
 
 	i = 0;
-	while (*(s + i) != '\n')
+	while (*(s + i) != '\n' && *(s + i) != '\0')
 		i++;
 	return (i + 1);
 }
@@ -30,29 +30,50 @@ char *ft_extract_line(char *buffer)
     line = malloc(size * sizeof (char));
     ft_memmove(line, buffer, ft_linelen(buffer) + 1);
     line [size - 1] = '\0';
+    if (buffer[0] == '\0')
+        return (NULL);
     return(line);
 }
+char *ft_trim(int size, char *str)
+{
+    char    *trim;
+
+    trim = malloc((size + 1) * sizeof(char));
+    trim = ft_memcpy(trim, str, size);
+    trim [size] = '\0';
+    free (str);
+    return (trim);
+}
+
 
 char *ft_read(int fd, char *buffer)
 {
     char        *new_buffer;
     char        *reading;
+    int         EndOfFIle;
+    int         bytesread;
 
     if (!buffer)
     {
         buffer = malloc(BUFFER_SIZE * sizeof (char));
         read(fd, buffer, BUFFER_SIZE);
     } 
-    reading = malloc(BUFFER_SIZE * sizeof (char)); 
-    while (ft_strchr(buffer, '\n') == 0)
+    EndOfFIle = 0;
+    while (ft_strchr(buffer, '\n') == 0 && EndOfFIle == 0)
     {
-        read(fd, reading, BUFFER_SIZE);
+        reading = malloc(BUFFER_SIZE * sizeof (char)); 
+        bytesread = read(fd, reading, BUFFER_SIZE);
+        if (bytesread < BUFFER_SIZE)
+        {
+            reading = ft_trim(bytesread, reading);
+            EndOfFIle = 1;
+        }
         new_buffer = ft_strjoin(buffer, reading);
         free (buffer);
+        free (reading); 
         buffer = new_buffer;
     }
-    free (reading);
-    return(new_buffer);
+    return(buffer);
 }
 
 char *ft_remove_line(char *buffer)
@@ -62,7 +83,7 @@ char *ft_remove_line(char *buffer)
 
     start = ft_linelen(buffer);
     size = ft_strlen(buffer) - start;
-    return (ft_substr(buffer,start, size));
+    return (ft_substr(buffer, start, size));
 }
 
 char *get_next_line(int fd)

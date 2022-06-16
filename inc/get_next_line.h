@@ -16,3 +16,4 @@
 #endif
 
 char *get_next_line(int fd);
+int ft_linelen(char *s);

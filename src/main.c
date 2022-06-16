@@ -18,18 +18,17 @@ int main (void)
 {
     int fd;
     char *line;
-    int i;
 
     //buffer = malloc(30 * sizeof(char));
     fd = open("files/file1.txt", O_RDONLY | O_CREAT);
 
-    i = 0;
-    while (i<8)
+    line = get_next_line(fd);
+    printf("LINEA %s", line); 
+    while (line)
     {
         line = get_next_line(fd);
-        printf("LINEA [%s]\n", line);
+        printf("LINEA %s", line);
         free (line);
-        i++;
     }      
     //read(fd, buffer, 30);
     //printf("FD [%d] - %s",fd, buffer);

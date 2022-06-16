@@ -18,15 +18,18 @@ int ft_linelen(char *s)
 	i = 0;
 	while (*(s + i) != '\n')
 		i++;
-	return (i);
+	return (i + 1);
 }
 
 char *ft_extract_line(char *buffer)
 {
     char    *line;
+    int     size;
 
-    line = malloc((ft_linelen(buffer) + 1) * sizeof (char));
+    size = ft_linelen(buffer) + 1;
+    line = malloc(size * sizeof (char));
     ft_memmove(line, buffer, ft_linelen(buffer) + 1);
+    line [size - 1] = '\0';
     return(line);
 }
 
@@ -57,7 +60,7 @@ char *ft_remove_line(char *buffer)
     int     size;
     int     start;
 
-    start = ft_linelen(buffer) + 1;
+    start = ft_linelen(buffer);
     size = ft_strlen(buffer) - start;
     return (ft_substr(buffer,start, size));
 }

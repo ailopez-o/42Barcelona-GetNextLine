@@ -46,27 +46,31 @@ int main (void)
 {
     int     fd;
     char    *line;
-    char    arg[] = "files/42_with_nl";
-    char    c;
+    //char    arg[] = "files/42_with_nl";
+    //char    c;
 
-    fd = open(arg, O_RDONLY | O_CREAT);
+    // INVALID FD
+	///* 1 */ test_gnl(-1, NULL);
+    line = get_next_line(-1);
+    printf("Linea [%s]\n", line);
+    ///* 2 */ test_gnl(100, NULL);
+    line = get_next_line(100);
+    printf("Linea [%s]\n", line);   
+	fd = open("files/empty.txt", O_RDONLY);
+	close(fd);
+	///* 3 */ test_gnl(fd, NULL);
+    line = get_next_line(fd);
+    printf("Linea [%s]\n", line);  
 
+	// EMPTY
+    fd = open("files/empty.txt", O_RDONLY);
+	//	/* 1 */ test_gnl(fd, NULL);
     line = get_next_line(fd);
-    printf("LINEA %s", line);
-    free (line); 
-    read(fd, &c, 1);
-    printf("caracter %c\n", c);
+    printf("FD[%d] - Linea [%s]\n", fd, line);   
+    //	/* 2 */ test_gnl(fd, NULL);
     line = get_next_line(fd);
-    printf("LINEA2 %s", line); 
-    return (0);
-    while (line)
-    {
-        line = get_next_line(fd);
-        printf("LINEA2 %s", line);
-        if (line)
-            free (line);
-    }      
-    close (fd);
+    printf("FD[%d] - Linea [%s]\n", fd,line);   
+
 }
 
 

@@ -31,7 +31,7 @@ char	*ft_extract_line(char *buffer)
 	if (buffer[0] == '\0')
 		return (NULL);
 	size = ft_linelen(buffer) + 1;
-	line = calloc(size, sizeof (char));
+	line = ft_calloc(size, sizeof (char));
 	if (line == NULL)
 		return (NULL);
 	ft_strlcpy(line, buffer, size);
@@ -47,7 +47,7 @@ char	*ft_read(int fd, char *buffer)
 	bytes = 1;
 	while (ft_strchr(buffer, '\n') == 0 && bytes > 0)
 	{
-		reading = calloc((BUFFER_SIZE + 1), sizeof(char));
+		reading = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 		if (reading == NULL)
 			return (buffer);
 		bytes = read(fd, reading, BUFFER_SIZE);
@@ -68,7 +68,7 @@ char	*ft_remove_line(char *buffer)
 
 	start = ft_linelen(buffer);
 	size = ft_strlen(buffer) - start;
-	newbuffer = calloc (size + 1, sizeof (char));
+	newbuffer = ft_calloc (size + 1, sizeof (char));
 	if (newbuffer == NULL)
 		return (NULL);
 	i = 0;
@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!buffer[fd])
 	{
-		buffer[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
+		buffer[fd] = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 		if (buffer[fd] == NULL)
 			return (NULL);
 		if (read(fd, buffer[fd], BUFFER_SIZE) < 1)

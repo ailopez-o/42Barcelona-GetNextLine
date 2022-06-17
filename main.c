@@ -71,6 +71,16 @@ int main (void)
     line = get_next_line(fd);
     printf("FD[%d] - Linea [%s]\n", fd,line);   
 
+	// 1 CHAR
+    fd = open("files/1char.txt", O_RDONLY);
+	//	/* 1 */ test_gnl(fd, "0");
+    line = get_next_line(fd);
+    printf("FD[%d] - Linea [%s]\n", fd,line);   
+    free (line);
+    //	/* 2 */ test_gnl(fd, NULL);
+    line = get_next_line(fd);
+    printf("FD[%d] - Linea [%s]\n", fd,line);   	   
+
 }
 
 

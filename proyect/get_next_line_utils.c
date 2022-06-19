@@ -11,29 +11,6 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	j;
-	size_t	dlen;
-	size_t	slen;
-
-	dlen = ft_strlen(dst);
-	slen = ft_strlen(src);
-	if (dstsize == 0 || dstsize <= dlen)
-		return (slen + dstsize);
-	i = 0;
-	j = dlen;
-	while (*(src + i) != '\0' && i < dstsize - dlen - 1)
-	{
-		*(dst + j) = *(src + i);
-		i++;
-		j++;
-	}
-	*(dst + j) = '\0';
-	return (dlen + slen);
-}
-
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
@@ -69,18 +46,30 @@ size_t	ft_strlen(const char *s)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*ptr;
-	int		lens1;
-	int		lens2;
+	int		size;
+	char	*str;
+	int		i;
+	int		j;
 
-	lens1 = ft_strlen(s1);
-	lens2 = ft_strlen(s2);
-	ptr = malloc (sizeof(char) * (lens1 + lens2 + 1));
-	if (!ptr)
+	size = ft_strlen(s1) + ft_strlen(s2);
+	str = malloc(sizeof(char) * (size + 1));
+	if (!str || !s1 || !s2)
 		return (NULL);
-	ft_strlcpy(ptr, s1, lens1 + 1);
-	ft_strlcat(ptr, s2, lens1 + lens2 + 1);
-	return (ptr);
+	i = 0;
+	while (s1[i] != 0)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j] != 0)
+	{
+		str[i] = s2[j];
+		i++;
+		j++;
+	}
+	str[size] = '\0';
+	return (str);
 }
 
 char	*ft_strchr(const char *s, int c)

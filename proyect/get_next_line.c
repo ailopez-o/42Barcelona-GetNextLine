@@ -28,7 +28,7 @@ char	*ft_extract_line(char *buffer)
 	char	*line;
 	int		size;
 
-	if (buffer[0] == '\0')
+	if (!buffer || buffer[0] == '\0')
 		return (NULL);
 	size = ft_linelen(buffer) + 1;
 	line = ft_calloc(size, sizeof (char));
@@ -42,20 +42,27 @@ char	*ft_read(int fd, char *buffer)
 {
 	char	*new_buffer;
 	char	*reading;
-	int		bytes;
+	int		byte_read;
 
-	bytes = 1;
-	while (ft_strchr(buffer, '\n') == 0 && bytes > 0)
+	if (ft_strchr(buffer, '\n') != 0)
+		return (buffer);
+	reading = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (reading == NULL)
+		return (buffer);
+	while (ft_strchr(reading, '\n') == 0)
 	{
-		reading = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-		if (reading == NULL)
+		byte_read = read(fd, reading, BUFFER_SIZE);
+		if (byte_read < 1)
+		{
+			free(reading);
 			return (buffer);
-		bytes = read(fd, reading, BUFFER_SIZE);
+		}
+		reading[byte_read] = '\0';
 		new_buffer = ft_strjoin(buffer, reading);
-		free (reading);
 		free (buffer);
 		buffer = new_buffer;
 	}
+	free (reading);
 	return (buffer);
 }
 
@@ -66,6 +73,8 @@ char	*ft_remove_line(char *buffer)
 	char	*newbuffer;
 	int		i;
 
+	if (!buffer)
+		return (NULL);
 	start = ft_linelen(buffer);
 	size = ft_strlen(buffer) - start;
 	newbuffer = ft_calloc (size + 1, sizeof (char));

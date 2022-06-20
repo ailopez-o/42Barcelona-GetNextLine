@@ -96,8 +96,10 @@ char	*get_next_line(int fd)
 	static char	*buffer[1024];
 	char		*line;
 
-	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
 		return (NULL);
+	if (read(fd, 0, 0) < 0	&& !buffer[fd])
+		return (NULL);	
 	if (!buffer[fd])
 	{
 		buffer[fd] = ft_calloc((BUFFER_SIZE + 1), sizeof(char));

@@ -11,12 +11,6 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-void ft_free_gnl(char *ptr)
-{
-	printf("PTR FREED [%p]\n", ptr);
-	free (ptr);
-}
-
 int	ft_linelen(char *s)
 {
 	size_t	i;
@@ -50,6 +44,8 @@ char	*ft_read(int fd, char *buffer)
 	char	*reading;
 	int		byte_read;
 
+	if (!buffer)
+		buffer = ft_calloc(1, 1);
 	if (ft_strchr(buffer, '\n') != 0)
 		return (buffer);
 	reading = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
@@ -59,10 +55,7 @@ char	*ft_read(int fd, char *buffer)
 	{
 		byte_read = read(fd, reading, BUFFER_SIZE);
 		if (byte_read < 1)
-		{
-			free(reading);
-			return (buffer);
-		}
+			break ;
 		reading[byte_read] = '\0';
 		new_buffer = ft_strjoin(buffer, reading);
 		free (buffer);
@@ -107,16 +100,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
 		return (NULL);
-	if (read(fd, 0, 0) < 0	&& !buffer[fd])
-		return (NULL);		
-	if (!buffer[fd])
-	{
-		buffer[fd] = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-		if (buffer[fd] == NULL)
-			return (NULL);
-		if (read(fd, buffer[fd], BUFFER_SIZE) < 1)
-			return (NULL);
-	}
+	if (read(fd, 0, 0) < 0 && !buffer[fd])
+		return (NULL);
 	buffer[fd] = ft_read(fd, buffer[fd]);
 	line = ft_extract_line(buffer[fd]);
 	buffer[fd] = ft_remove_line(buffer[fd]);

@@ -97,7 +97,6 @@ void	*ft_calloc(size_t count, size_t size)
 	{
 		*(s1 + i) = 0;
 		i++;
-	}
-	//printf("PTR ALLOCATED [%p] - SIZE [%d]\n", s1, (int)(count * size));	
+	}	
 	return (s1);
 }

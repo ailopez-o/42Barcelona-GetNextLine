@@ -14,7 +14,7 @@
 
 NAME		= a.out
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=1000000
+CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=10
 RM			= rm -f
 
 
@@ -32,7 +32,7 @@ WHITE = \033[0;97m
 
 #Sources
 
-SRC		=	main.c proyect/get_next_line.c proyect/get_next_line_utils.c
+SRC		=	main.c proyect/get_next_line_bonus.c proyect/get_next_line_utils_bonus.c
 OBJS	=	$(SRC:%.c=%.o)
 
 ###

@@ -11,6 +11,12 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
+void ft_free_gnl(char *ptr)
+{
+	printf("PTR FREED [%p]\n", ptr);
+	free (ptr);
+}
+
 int	ft_linelen(char *s)
 {
 	size_t	i;
@@ -68,7 +74,6 @@ char	*ft_read(int fd, char *buffer)
 
 char	*ft_remove_line(char *buffer)
 {
-	int		size;
 	int		start;
 	char	*newbuffer;
 	int		i;
@@ -81,8 +86,7 @@ char	*ft_remove_line(char *buffer)
 		return (NULL);
 	}
 	start = ft_linelen(buffer);
-	size = ft_strlen(buffer) - start;
-	newbuffer = ft_calloc (size + 1, sizeof (char));
+	newbuffer = ft_calloc (ft_strlen(buffer) - start + 1, sizeof (char));
 	if (newbuffer == NULL)
 		return (NULL);
 	i = 0;

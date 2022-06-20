@@ -14,7 +14,7 @@
 
 NAME		= a.out
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=1
+CFLAGS		= -g -Wall -Werror -Wextra -D BUFFER_SIZE=1000000
 RM			= rm -f
 
 

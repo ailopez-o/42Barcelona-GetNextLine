@@ -75,6 +75,11 @@ char	*ft_remove_line(char *buffer)
 
 	if (!buffer)
 		return (NULL);
+	if (buffer[0] == '\0')
+	{
+		free (buffer);
+		return (NULL);
+	}
 	start = ft_linelen(buffer);
 	size = ft_strlen(buffer) - start;
 	newbuffer = ft_calloc (size + 1, sizeof (char));
@@ -96,8 +101,10 @@ char	*get_next_line(int fd)
 	static char	*buffer[1024];
 	char		*line;
 
-	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
 		return (NULL);
+	if (read(fd, 0, 0) < 0	&& !buffer[fd])
+		return (NULL);		
 	if (!buffer[fd])
 	{
 		buffer[fd] = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
@@ -109,7 +116,5 @@ char	*get_next_line(int fd)
 	buffer[fd] = ft_read(fd, buffer[fd]);
 	line = ft_extract_line(buffer[fd]);
 	buffer[fd] = ft_remove_line(buffer[fd]);
-	if (line == NULL)
-		free (buffer[fd]);
 	return (line);
 }

@@ -44,8 +44,6 @@ char	*ft_read(int fd, char *buffer)
 	char	*reading;
 	int		byte_read;
 
-	if (!buffer)
-		buffer = ft_calloc(1, 1);
 	if (ft_strchr(buffer, '\n') != 0)
 		return (buffer);
 	reading = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
@@ -101,6 +99,10 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (read(fd, 0, 0) < 0 && !buffer[fd])
+		return (NULL);
+	if (!buffer[fd])
+		buffer[fd] = ft_calloc(1, 1);
+	if (buffer[fd] == NULL)
 		return (NULL);
 	buffer[fd] = ft_read(fd, buffer[fd]);
 	line = ft_extract_line(buffer[fd]);
